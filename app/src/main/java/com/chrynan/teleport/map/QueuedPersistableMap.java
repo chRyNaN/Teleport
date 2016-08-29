@@ -33,151 +33,391 @@ public class QueuedPersistableMap implements PersistableMap {
 
     @Override
     public boolean put(String key, Byte value) {
-        return false;
+        boolean successful = false;
+        for (PersistableMap p : persistableMaps) {
+            boolean b = p.put(key, value);
+            if (!delegateToAll && b) {
+                return true;
+            } else {
+                successful = b ? true : successful;
+            }
+        }
+        return successful;
     }
 
     @Override
     public boolean put(String key, Short value) {
-        return false;
+        boolean successful = false;
+        for (PersistableMap p : persistableMaps) {
+            boolean b = p.put(key, value);
+            if (!delegateToAll && b) {
+                return true;
+            } else {
+                successful = b ? true : successful;
+            }
+        }
+        return successful;
     }
 
     @Override
     public boolean put(String key, Integer value) {
-        return false;
+        boolean successful = false;
+        for (PersistableMap p : persistableMaps) {
+            boolean b = p.put(key, value);
+            if (!delegateToAll && b) {
+                return true;
+            } else {
+                successful = b ? true : successful;
+            }
+        }
+        return successful;
     }
 
     @Override
     public boolean put(String key, Long value) {
-        return false;
+        boolean successful = false;
+        for (PersistableMap p : persistableMaps) {
+            boolean b = p.put(key, value);
+            if (!delegateToAll && b) {
+                return true;
+            } else {
+                successful = b ? true : successful;
+            }
+        }
+        return successful;
     }
 
     @Override
     public boolean put(String key, Float value) {
-        return false;
+        boolean successful = false;
+        for (PersistableMap p : persistableMaps) {
+            boolean b = p.put(key, value);
+            if (!delegateToAll && b) {
+                return true;
+            } else {
+                successful = b ? true : successful;
+            }
+        }
+        return successful;
     }
 
     @Override
     public boolean put(String key, Double value) {
-        return false;
+        boolean successful = false;
+        for (PersistableMap p : persistableMaps) {
+            boolean b = p.put(key, value);
+            if (!delegateToAll && b) {
+                return true;
+            } else {
+                successful = b ? true : successful;
+            }
+        }
+        return successful;
     }
 
     @Override
     public boolean put(String key, Boolean value) {
-        return false;
+        boolean successful = false;
+        for (PersistableMap p : persistableMaps) {
+            boolean b = p.put(key, value);
+            if (!delegateToAll && b) {
+                return true;
+            } else {
+                successful = b ? true : successful;
+            }
+        }
+        return successful;
     }
 
     @Override
     public boolean put(String key, Character value) {
-        return false;
+        boolean successful = false;
+        for (PersistableMap p : persistableMaps) {
+            boolean b = p.put(key, value);
+            if (!delegateToAll && b) {
+                return true;
+            } else {
+                successful = b ? true : successful;
+            }
+        }
+        return successful;
     }
 
     @Override
     public boolean put(String key, String value) {
-        return false;
+        boolean successful = false;
+        for (PersistableMap p : persistableMaps) {
+            boolean b = p.put(key, value);
+            if (!delegateToAll && b) {
+                return true;
+            } else {
+                successful = b ? true : successful;
+            }
+        }
+        return successful;
     }
 
     @Override
     public boolean put(String key, Bitmap bitmap) {
-        return false;
+        boolean successful = false;
+        for (PersistableMap p : persistableMaps) {
+            boolean b = p.put(key, bitmap);
+            if (!delegateToAll && b) {
+                return true;
+            } else {
+                successful = b ? true : successful;
+            }
+        }
+        return successful;
     }
 
     @Override
     public boolean put(String key, Serializable value) {
-        return false;
+        boolean successful = false;
+        for (PersistableMap p : persistableMaps) {
+            boolean b = p.put(key, value);
+            if (!delegateToAll && b) {
+                return true;
+            } else {
+                successful = b ? true : successful;
+            }
+        }
+        return successful;
     }
 
     @Override
     public boolean put(String key, Parcelable value) {
-        return false;
+        boolean successful = false;
+        for (PersistableMap p : persistableMaps) {
+            boolean b = p.put(key, value);
+            if (!delegateToAll && b) {
+                return true;
+            } else {
+                successful = b ? true : successful;
+            }
+        }
+        return successful;
     }
 
     @Override
     public <T> boolean put(String key, T value) {
-        return false;
+        boolean successful = false;
+        for (PersistableMap p : persistableMaps) {
+            boolean b = p.put(key, value);
+            if (!delegateToAll && b) {
+                return true;
+            } else {
+                successful = b ? true : successful;
+            }
+        }
+        return successful;
     }
 
     @Override
     public <T> boolean put(String key, Collection<T> value) {
-        return false;
+        boolean successful = false;
+        for (PersistableMap p : persistableMaps) {
+            boolean b = p.put(key, value);
+            if (!delegateToAll && b) {
+                return true;
+            } else {
+                successful = b ? true : successful;
+            }
+        }
+        return successful;
     }
 
     @Override
     public <T> boolean put(String key, T[] value) {
-        return false;
+        boolean successful = false;
+        for (PersistableMap p : persistableMaps) {
+            boolean b = p.put(key, value);
+            if (!delegateToAll && b) {
+                return true;
+            } else {
+                successful = b ? true : successful;
+            }
+        }
+        return successful;
     }
 
     @Override
     public Byte getByte(String key) {
+        Byte b;
+        for (PersistableMap p : persistableMaps) {
+            b = p.getByte(key);
+            if (b != null) {
+                return b;
+            }
+        }
         return null;
     }
 
     @Override
     public Short getShort(String key) {
+        Short s;
+        for (PersistableMap p : persistableMaps) {
+            s = p.getShort(key);
+            if (s != null) {
+                return s;
+            }
+        }
         return null;
     }
 
     @Override
     public Integer getInteger(String key) {
+        Integer i;
+        for (PersistableMap p : persistableMaps) {
+            i = p.getInteger(key);
+            if (i != null) {
+                return i;
+            }
+        }
         return null;
     }
 
     @Override
     public Long getLong(String key) {
+        Long l;
+        for (PersistableMap p : persistableMaps) {
+            l = p.getLong(key);
+            if (l != null) {
+                return l;
+            }
+        }
         return null;
     }
 
     @Override
     public Float getFloat(String key) {
+        Float f;
+        for (PersistableMap p : persistableMaps) {
+            f = p.getFloat(key);
+            if (f != null) {
+                return f;
+            }
+        }
         return null;
     }
 
     @Override
     public Double getDouble(String key) {
+        Double d;
+        for (PersistableMap p : persistableMaps) {
+            d = p.getDouble(key);
+            if (d != null) {
+                return d;
+            }
+        }
         return null;
     }
 
     @Override
     public Boolean getBoolean(String key) {
+        Boolean b;
+        for (PersistableMap p : persistableMaps) {
+            b = p.getBoolean(key);
+            if (b != null) {
+                return b;
+            }
+        }
         return null;
     }
 
     @Override
     public Character getCharacter(String key) {
+        Character c;
+        for (PersistableMap p : persistableMaps) {
+            c = p.getCharacter(key);
+            if (c != null) {
+                return c;
+            }
+        }
         return null;
     }
 
     @Override
     public String getString(String key) {
+        String s;
+        for (PersistableMap p : persistableMaps) {
+            s = p.getString(key);
+            if (s != null) {
+                return s;
+            }
+        }
         return null;
     }
 
     @Override
     public Bitmap getBitmap(String key) {
+        Bitmap b;
+        for (PersistableMap p : persistableMaps) {
+            b = p.getBitmap(key);
+            if (b != null) {
+                return b;
+            }
+        }
         return null;
     }
 
     @Override
     public Serializable getSerializable(String key) {
+        Serializable s;
+        for (PersistableMap p : persistableMaps) {
+            s = p.getSerializable(key);
+            if (s != null) {
+                return s;
+            }
+        }
         return null;
     }
 
     @Override
     public Parcelable getParcelable(String key) {
+        Parcelable p;
+        for (PersistableMap pm : persistableMaps) {
+            p = pm.getParcelable(key);
+            if (p != null) {
+                return p;
+            }
+        }
         return null;
     }
 
     @Override
     public <T> T getObject(String key, Class<T> clazz) {
+        T t;
+        for (PersistableMap p : persistableMaps) {
+            t = p.getObject(key, clazz);
+            if (t != null) {
+                return t;
+            }
+        }
         return null;
     }
 
     @Override
     public <T> Collection<T> getCollection(String key, Class<T> clazz) {
+        Collection<T> c;
+        for (PersistableMap p : persistableMaps) {
+            c = p.getCollection(key, clazz);
+            if (c != null) {
+                return c;
+            }
+        }
         return null;
     }
 
     @Override
     public <T> T[] getArray(String key, Class<T> clazz) {
+        T[] a;
+        for (PersistableMap p : persistableMaps) {
+            a = p.getArray(key, clazz);
+            if (a != null) {
+                return a;
+            }
+        }
         return null;
     }
 }
