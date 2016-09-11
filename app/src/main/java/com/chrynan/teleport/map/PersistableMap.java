@@ -2,6 +2,7 @@ package com.chrynan.teleport.map;
 
 import android.graphics.Bitmap;
 import android.os.Parcelable;
+import android.support.annotation.Nullable;
 
 import java.io.Serializable;
 import java.util.Collection;
@@ -33,108 +34,96 @@ public interface PersistableMap {
      *
      * @param key   The key used to reference the data.
      * @param value The value to store.
-     * @return Whether the object was successfully stored or not.
      */
-    boolean put(String key, Byte value);
+    void put(String key, Byte value);
 
     /**
      * Puts a Short into the underlying persistable data structure.
      *
      * @param key   The key used to reference the data.
      * @param value The value to store.
-     * @return Whether the object was successfully stored or not.
      */
-    boolean put(String key, Short value);
+    void put(String key, Short value);
 
     /**
      * Puts an Integer into the underlying persistable data structure.
      *
      * @param key   The key used to reference the data.
      * @param value The value to store.
-     * @return Whether the object was successfully stored or not.
      */
-    boolean put(String key, Integer value);
+    void put(String key, Integer value);
 
     /**
      * Puts a Long into the underlying persistable data structure.
      *
      * @param key   The key used to reference the data.
      * @param value The value to store.
-     * @return Whether the object was successfully stored or not.
      */
-    boolean put(String key, Long value);
+    void put(String key, Long value);
 
     /**
      * Puts a Float into the underlying persistable data structure.
      *
      * @param key   The key used to reference the data.
      * @param value The value to store.
-     * @return Whether the object was successfully stored or not.
      */
-    boolean put(String key, Float value);
+    void put(String key, Float value);
 
     /**
      * Puts a Double into the underlying persistable data structure.
      *
      * @param key   The key used to reference the data.
      * @param value The value to store.
-     * @return Whether the object was successfully stored or not.
      */
-    boolean put(String key, Double value);
+    void put(String key, Double value);
 
     /**
      * Puts a Boolean into the underlying persistable data structure.
      *
      * @param key   The key used to reference the data.
      * @param value The value to store.
-     * @return Whether the object was successfully stored or not.
      */
-    boolean put(String key, Boolean value);
+    void put(String key, Boolean value);
 
     /**
      * Puts a Character into the underlying persistable data structure.
      *
      * @param key   The key used to reference the data.
      * @param value The value to store.
-     * @return Whether the object was successfully stored or not.
      */
-    boolean put(String key, Character value);
+    void put(String key, Character value);
 
     /**
      * Puts a String into the underlying persistable data structure.
      *
      * @param key   The key used to reference the data.
      * @param value The value to store.
-     * @return Whether the object was successfully stored or not.
      */
-    boolean put(String key, String value);
+    void put(String key, String value);
 
     /**
      * Puts a Bitmap into the underlying persistable data structure or into its own file.
      *
      * @param key    The key used to reference the data.
      * @param bitmap The value to store.
-     * @return Whether the object was successfully stored or not.
      */
-    boolean put(String key, Bitmap bitmap);
+    void put(String key, Bitmap bitmap);
 
     /**
      * Puts a Serializable into the underlying persistable data structure.
      *
      * @param key   The key used to reference the data.
      * @param value The value to store.
-     * @return Whether the object was successfully stored or not.
      */
-    boolean put(String key, Serializable value);
+    void put(String key, Serializable value);
 
     /**
      * Puts a Parcelable into the underlying persistable data structure.
      *
      * @param key   The key used to reference the data.
      * @param value The value to store.
-     * @return Whether the object was successfully stored or not.
      */
-    boolean put(String key, Parcelable value);
+    void put(String key, Parcelable value);
 
     /**
      * Puts an Object into the underlying persistable data structure.
@@ -142,9 +131,8 @@ public interface PersistableMap {
      * @param key   The key used to reference the data.
      * @param value The value to store.
      * @param <T>   The type of object.
-     * @return Whether the object was successfully stored or not.
      */
-    <T> boolean put(String key, T value);
+    <T> void put(String key, T value);
 
     /**
      * Puts a Collection into the underlying persistable data structure.
@@ -152,9 +140,8 @@ public interface PersistableMap {
      * @param key   The key used to reference the data.
      * @param value The value to store.
      * @param <T>   The type of the objects in the Collection.
-     * @return Whether the object was successfully stored or not.
      */
-    <T> boolean put(String key, Collection<T> value);
+    <T> void put(String key, Collection<T> value);
 
     /**
      * Puts an Array into the underlying persistable data structure.
@@ -162,9 +149,8 @@ public interface PersistableMap {
      * @param key   The key used to reference the data.
      * @param value The value to store.
      * @param <T>   The type of the objects in the Array.
-     * @return Whether the object was successfully stored or not.
      */
-    <T> boolean put(String key, T[] value);
+    <T> void put(String key, T[] value);
 
     /**
      * Retrieves a Byte from the underlying persistable data structure.
@@ -172,6 +158,7 @@ public interface PersistableMap {
      * @param key The key used to reference the data.
      * @return The Object retrieved from the underlying data structure or null if one is not found.
      */
+    @Nullable
     Byte getByte(String key);
 
     /**
@@ -180,6 +167,7 @@ public interface PersistableMap {
      * @param key The key used to reference the data.
      * @return The Object retrieved from the underlying data structure or null if one is not found.
      */
+    @Nullable
     Short getShort(String key);
 
     /**
@@ -188,6 +176,7 @@ public interface PersistableMap {
      * @param key The key used to reference the data.
      * @return The Object retrieved from the underlying data structure or null if one is not found.
      */
+    @Nullable
     Integer getInteger(String key);
 
     /**
@@ -196,6 +185,7 @@ public interface PersistableMap {
      * @param key The key used to reference the data.
      * @return The Object retrieved from the underlying data structure or null if one is not found.
      */
+    @Nullable
     Long getLong(String key);
 
     /**
@@ -204,6 +194,7 @@ public interface PersistableMap {
      * @param key The key used to reference the data.
      * @return The Object retrieved from the underlying data structure or null if one is not found.
      */
+    @Nullable
     Float getFloat(String key);
 
     /**
@@ -212,6 +203,7 @@ public interface PersistableMap {
      * @param key The key used to reference the data.
      * @return The Object retrieved from the underlying data structure or null if one is not found.
      */
+    @Nullable
     Double getDouble(String key);
 
     /**
@@ -220,6 +212,7 @@ public interface PersistableMap {
      * @param key The key used to reference the data.
      * @return The Object retrieved from the underlying data structure or null if one is not found.
      */
+    @Nullable
     Boolean getBoolean(String key);
 
     /**
@@ -228,6 +221,7 @@ public interface PersistableMap {
      * @param key The key used to reference the data.
      * @return The Object retrieved from the underlying data structure or null if one is not found.
      */
+    @Nullable
     Character getCharacter(String key);
 
     /**
@@ -236,6 +230,7 @@ public interface PersistableMap {
      * @param key The key used to reference the data.
      * @return The Object retrieved from the underlying data structure or null if one is not found.
      */
+    @Nullable
     String getString(String key);
 
     /**
@@ -244,6 +239,7 @@ public interface PersistableMap {
      * @param key The key used to reference the data.
      * @return The Object retrieved from the underlying data structure or null if one is not found.
      */
+    @Nullable
     Bitmap getBitmap(String key);
 
     /**
@@ -252,6 +248,7 @@ public interface PersistableMap {
      * @param key The key used to reference the data.
      * @return The Object retrieved from the underlying data structure or null if one is not found.
      */
+    @Nullable
     Serializable getSerializable(String key);
 
     /**
@@ -260,6 +257,7 @@ public interface PersistableMap {
      * @param key The key used to reference the data.
      * @return The Object retrieved from the underlying data structure or null if one is not found.
      */
+    @Nullable
     Parcelable getParcelable(String key);
 
     /**
@@ -270,6 +268,7 @@ public interface PersistableMap {
      * @param <T>   The type of the Object.
      * @return The Object retrieved from the underlying data structure or null if one is not found.
      */
+    @Nullable
     <T> T getObject(String key, Class<T> clazz);
 
     /**
@@ -280,6 +279,7 @@ public interface PersistableMap {
      * @param <T>   The type of the Objects in the Collection.
      * @return The Object retrieved from the underlying data structure or null if one is not found.
      */
+    @Nullable
     <T> Collection<T> getCollection(String key, Class<T> clazz);
 
     /**
@@ -290,5 +290,6 @@ public interface PersistableMap {
      * @param <T>   The type of the Objects in the Array.
      * @return The Object retrieved from the underlying data structure or null if one is not found.
      */
+    @Nullable
     <T> T[] getArray(String key, Class<T> clazz);
 }
