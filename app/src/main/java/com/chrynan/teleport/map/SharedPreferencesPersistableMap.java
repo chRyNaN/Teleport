@@ -10,79 +10,80 @@ import java.util.Collection;
  * Created by ckeenan on 8/28/16. A PersistableMap implementation using SharedPreferences as the underlying data structure.
  */
 public class SharedPreferencesPersistableMap implements PersistableMap {
+
     @Override
-    public boolean put(String key, Byte value) {
-        return false;
+    public void put(String key, Byte value) {
+
     }
 
     @Override
-    public boolean put(String key, Short value) {
-        return false;
+    public void put(String key, Short value) {
+
     }
 
     @Override
-    public boolean put(String key, Integer value) {
-        return false;
+    public void put(String key, Integer value) {
+
     }
 
     @Override
-    public boolean put(String key, Long value) {
-        return false;
+    public void put(String key, Long value) {
+
     }
 
     @Override
-    public boolean put(String key, Float value) {
-        return false;
+    public void put(String key, Float value) {
+
     }
 
     @Override
-    public boolean put(String key, Double value) {
-        return false;
+    public void put(String key, Double value) {
+
     }
 
     @Override
-    public boolean put(String key, Boolean value) {
-        return false;
+    public void put(String key, Boolean value) {
+
     }
 
     @Override
-    public boolean put(String key, Character value) {
-        return false;
+    public void put(String key, Character value) {
+
     }
 
     @Override
-    public boolean put(String key, String value) {
-        return false;
+    public void put(String key, String value) {
+
     }
 
     @Override
-    public boolean put(String key, Bitmap bitmap) {
-        return false;
+    public void put(String key, Bitmap bitmap) {
+
     }
 
     @Override
-    public boolean put(String key, Serializable value) {
-        return false;
+    public void put(String key, Serializable value) {
+
     }
 
     @Override
-    public boolean put(String key, Parcelable value) {
-        return false;
+    public void put(String key, Parcelable value) {
+
     }
 
     @Override
-    public <T> boolean put(String key, T value) {
-        return false;
+    public <T> void put(String key, T value) {
+
     }
 
     @Override
-    public <T> boolean put(String key, Collection<T> value) {
-        return false;
+    public <T> void put(String key, Collection<T> value) {
+
     }
 
     @Override
-    public <T> boolean put(String key, T[] value) {
-        return false;
+    public <T> void put(String key, T[] value) {
+
     }
 
     @Override
