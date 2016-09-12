@@ -3,6 +3,7 @@ package com.chrynan.teleport.map;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.os.Parcelable;
+import android.support.annotation.NonNull;
 
 import com.chrynan.teleport.util.BitmapUtil;
 
@@ -10,9 +11,15 @@ import java.io.Serializable;
 import java.util.Collection;
 
 /**
- * Created by ckeenan on 8/28/16. A PersistableMap implementation using SharedPreferences as the underlying data structure.
+ * Created by ckeenan on 8/28/16.
+ * A PersistableMap implementation using SharedPreferences as the underlying data structure.
  */
 public class SharedPreferencesPersistableMap implements PersistableMap {
+    private final Context context;
+
+    public SharedPreferencesPersistableMap(@NonNull Context context) {
+        this.context = context;
+    }
 
     @Override
     public void put(String key, Byte value) {
@@ -60,7 +67,7 @@ public class SharedPreferencesPersistableMap implements PersistableMap {
     }
 
     @Override
-    public void put(Context context, String key, Bitmap bitmap) {
+    public void put(String key, Bitmap bitmap) {
         BitmapUtil.saveBitmap(context, key, bitmap);
     }
 
@@ -135,7 +142,7 @@ public class SharedPreferencesPersistableMap implements PersistableMap {
     }
 
     @Override
-    public Bitmap getBitmap(Context context, String key) {
+    public Bitmap getBitmap(String key) {
         return BitmapUtil.getBitmap(context, key);
     }
 
