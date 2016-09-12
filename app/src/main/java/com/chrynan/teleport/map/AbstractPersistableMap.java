@@ -1,5 +1,6 @@
 package com.chrynan.teleport.map;
 
+import android.content.Context;
 import android.graphics.Bitmap;
 import android.os.Parcelable;
 
@@ -58,7 +59,7 @@ public class AbstractPersistableMap implements PersistableMap {
     }
 
     @Override
-    public void put(String key, Bitmap bitmap) {
+    public void put(Context context, String key, Bitmap bitmap) {
 
     }
 
@@ -133,7 +134,7 @@ public class AbstractPersistableMap implements PersistableMap {
     }
 
     @Override
-    public Bitmap getBitmap(String key) {
+    public Bitmap getBitmap(Context context, String key) {
         return null;
     }
 

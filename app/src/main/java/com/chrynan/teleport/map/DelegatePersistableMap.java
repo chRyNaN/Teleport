@@ -1,5 +1,6 @@
 package com.chrynan.teleport.map;
 
+import android.content.Context;
 import android.graphics.Bitmap;
 import android.os.Parcelable;
 
@@ -86,7 +87,7 @@ public class DelegatePersistableMap implements PersistableMap {
     }
 
     @Override
-    public void put(String key, Bitmap bitmap) {
+    public void put(Context context, String key, Bitmap bitmap) {
         for (PersistableMap map : persistableMaps) {
             map.put(key, bitmap);
         }
@@ -236,10 +237,10 @@ public class DelegatePersistableMap implements PersistableMap {
     }
 
     @Override
-    public Bitmap getBitmap(String key) {
+    public Bitmap getBitmap(Context context, String key) {
         Bitmap b;
         for (PersistableMap p : persistableMaps) {
-            b = p.getBitmap(key);
+            b = p.getBitmap(context, key);
             if (b != null) {
                 return b;
             }
