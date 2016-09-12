@@ -1,6 +1,5 @@
 package com.chrynan.teleport.map;
 
-import android.content.Context;
 import android.graphics.Bitmap;
 import android.os.Parcelable;
 
@@ -8,7 +7,8 @@ import java.io.Serializable;
 import java.util.Collection;
 
 /**
- * Created by ckeenan on 8/28/16. This class implements the PersistableMap interface and allows classes to extend it without
+ * Created by ckeenan on 8/28/16.
+ * This class implements the PersistableMap interface and allows classes to extend it without
  * having to provide an implementation for each method. Subclasses could override the methods they are interested in implementing.
  */
 public class AbstractPersistableMap implements PersistableMap {
@@ -59,7 +59,7 @@ public class AbstractPersistableMap implements PersistableMap {
     }
 
     @Override
-    public void put(Context context, String key, Bitmap bitmap) {
+    public void put(String key, Bitmap bitmap) {
 
     }
 
@@ -134,7 +134,7 @@ public class AbstractPersistableMap implements PersistableMap {
     }
 
     @Override
-    public Bitmap getBitmap(Context context, String key) {
+    public Bitmap getBitmap(String key) {
         return null;
     }
 

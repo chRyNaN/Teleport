@@ -14,16 +14,16 @@ import java.io.Serializable;
 import java.util.Collection;
 
 /**
- * Created by ckeenan on 8/28/16. A PersistableMap implementation using an Intent as the underlying data structure.
+ * Created by ckeenan on 8/28/16.
+ * A PersistableMap implementation using an Intent as the underlying data structure.
  */
 public class IntentPersistableMap implements PersistableMap {
+    private final Context context;
     private final Intent intent;
     private final Gson gson;
 
-    public IntentPersistableMap(@NonNull Intent intent) {
-        if (intent == null) {
-            throw new IllegalArgumentException("The Intent parameter in the IntentPersistablemap constructure cannot be null.");
-        }
+    public IntentPersistableMap(@NonNull Context context, @NonNull Intent intent) {
+        this.context = context;
         this.intent = intent;
         this.gson = new Gson();
     }
@@ -74,7 +74,7 @@ public class IntentPersistableMap implements PersistableMap {
     }
 
     @Override
-    public void put(Context context, String key, Bitmap bitmap) {
+    public void put(String key, Bitmap bitmap) {
         BitmapUtil.saveBitmap(context, key, bitmap);
     }
 
@@ -224,7 +224,7 @@ public class IntentPersistableMap implements PersistableMap {
     }
 
     @Override
-    public Bitmap getBitmap(Context context, String key) {
+    public Bitmap getBitmap(String key) {
         return BitmapUtil.getBitmap(context, key);
     }
 

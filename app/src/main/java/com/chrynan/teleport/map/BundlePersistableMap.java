@@ -13,16 +13,16 @@ import java.io.Serializable;
 import java.util.Collection;
 
 /**
- * Created by ckeenan on 8/28/16. A PersistableMap implementation using a Bundle as the underlying data structure.
+ * Created by ckeenan on 8/28/16.
+ * A PersistableMap implementation using a Bundle as the underlying data structure.
  */
 public class BundlePersistableMap implements PersistableMap {
+    private final Context context;
     private final Bundle bundle;
     private final Gson gson;
 
-    public BundlePersistableMap(@NonNull Bundle bundle) {
-        if (bundle == null) {
-            throw new IllegalArgumentException("The Bundle parameter in the BundlePersistablemap constructure cannot be null.");
-        }
+    public BundlePersistableMap(@NonNull Context context, @NonNull Bundle bundle) {
+        this.context = context;
         this.bundle = bundle;
         this.gson = new Gson();
     }
@@ -73,7 +73,7 @@ public class BundlePersistableMap implements PersistableMap {
     }
 
     @Override
-    public void put(Context context, String key, Bitmap bitmap) {
+    public void put(String key, Bitmap bitmap) {
         BitmapUtil.saveBitmap(context, key, bitmap);
     }
 
@@ -205,7 +205,7 @@ public class BundlePersistableMap implements PersistableMap {
     }
 
     @Override
-    public Bitmap getBitmap(Context context, String key) {
+    public Bitmap getBitmap(String key) {
         return BitmapUtil.getBitmap(context, key);
     }
 
