@@ -28,10 +28,10 @@ import java.util.List;
  */
 
 /**
- * Created by chRyNaN on 4/20/2016. This class handles binding retrieved data to appropriate fields of a specified binding object.
+ * Created by chRyNaN on 4/20/2016.
+ * This class handles binding retrieved data to appropriate fields of a specified binding object.
  */
 public class Teleport {
-    private static final String TAG = Teleport.class.getSimpleName();
 
     /**
      * Retrieves and stores data into their corresponding fields within the specified binding object.
@@ -40,26 +40,20 @@ public class Teleport {
      *                   which these fields are then propagated with corresponding fetched data.
      * @param context    The Context used to store and retrieve data.
      */
-    public static final void bind(@NonNull Object bindObject, @NonNull Context context) {
-        if (bindObject == null) {
-            throw new IllegalArgumentException("Object parameter in bind method of " + Teleport.class.getSimpleName() +
-                    " class must not be null.");
-        }
-        if (context == null) {
-            throw new IllegalArgumentException("Context parameter in bind method of " + Teleport.class.getSimpleName() +
-                    " class must not be null.");
-        }
-        StorageMap map = StorageMap.with(context);
-        for (Field f : getAnnotatedFields(bindObject)) {
+    public static void bind(@NonNull Object bindObject, @NonNull Context context) {
+        final StorageMap map = StorageMap.with(context);
+
+        for (final Field f : getAnnotatedFields(bindObject)) {
             try {
+
                 f.setAccessible(true);
-                Data d = f.getAnnotation(Data.class);
-                if (d.bind()) {
-                    f.set(bindObject, map.get((d == null) ? "" : d.value(), f.getType()));
+
+                final Data d = f.getAnnotation(Data.class);
+
+                if (d != null && d.bind()) {
+                    f.set(bindObject, map.get(d.value(), f.getType()));
                 }
-            } catch (IllegalAccessException iae) {
-                iae.printStackTrace();
-            } catch (Exception e) {
+            } catch (IllegalAccessException e) {
                 e.printStackTrace();
             }
         }
@@ -75,29 +69,23 @@ public class Teleport {
      *                   null, then it is used as the default storage mechanism (SharedPreferences created by Context).
      * @param intent     The Intent used to store and retrieve data.
      */
-    public static final void bind(@NonNull Object bindObject, @NonNull Context context, Intent intent) {
-        if (bindObject == null) {
-            throw new IllegalArgumentException("Object parameter in bind method of " + Teleport.class.getSimpleName() +
-                    " class must not be null.");
-        }
-        if (context == null) {
-            throw new IllegalArgumentException("Context parameter in bind method of " + Teleport.class.getSimpleName() +
-                    " class must not be null.");
-        }
+    public static void bind(@NonNull Object bindObject, @NonNull Context context, Intent intent) {
         if (intent == null) {
             bind(bindObject, context);
         } else {
-            StorageMap map = StorageMap.with(context, intent);
-            for (Field f : getAnnotatedFields(bindObject)) {
+            final StorageMap map = StorageMap.with(context, intent);
+
+            for (final Field f : getAnnotatedFields(bindObject)) {
                 try {
+
                     f.setAccessible(true);
-                    Data d = f.getAnnotation(Data.class);
-                    if (d.bind()) {
-                        f.set(bindObject, map.get((d == null) ? "" : d.value(), f.getType()));
+
+                    final Data d = f.getAnnotation(Data.class);
+
+                    if (d != null && d.bind()) {
+                        f.set(bindObject, map.get(d.value(), f.getType()));
                     }
-                } catch (IllegalAccessException iae) {
-                    iae.printStackTrace();
-                } catch (Exception e) {
+                } catch (IllegalAccessException e) {
                     e.printStackTrace();
                 }
             }
@@ -114,29 +102,24 @@ public class Teleport {
      *                   null, then it is used as the default storage mechanism (SharedPreferences created by Context).
      * @param bundle     The Bundle used to store and retrieve data.
      */
-    public static final void bind(@NonNull Object bindObject, @NonNull Context context, Bundle bundle) {
-        if (bindObject == null) {
-            throw new IllegalArgumentException("Object parameter in bind method of " + Teleport.class.getSimpleName() +
-                    " class must not be null.");
-        }
-        if (context == null) {
-            throw new IllegalArgumentException("Context parameter in bind method of " + Teleport.class.getSimpleName() +
-                    " class must not be null.");
-        }
+    public static void bind(@NonNull Object bindObject, @NonNull Context context, Bundle bundle) {
         if (bundle == null) {
             bind(bindObject, context);
         } else {
-            StorageMap map = StorageMap.with(context, bundle);
-            for (Field f : getAnnotatedFields(bindObject)) {
+
+            final StorageMap map = StorageMap.with(context, bundle);
+
+            for (final Field f : getAnnotatedFields(bindObject)) {
                 try {
+
                     f.setAccessible(true);
-                    Data d = f.getAnnotation(Data.class);
-                    if (d.bind()) {
-                        f.set(bindObject, map.get((d == null) ? "" : d.value(), f.getType()));
+
+                    final Data d = f.getAnnotation(Data.class);
+
+                    if (d != null && d.bind()) {
+                        f.set(bindObject, map.get(d.value(), f.getType()));
                     }
-                } catch (IllegalAccessException iae) {
-                    iae.printStackTrace();
-                } catch (Exception e) {
+                } catch (IllegalAccessException e) {
                     e.printStackTrace();
                 }
             }
@@ -151,11 +134,7 @@ public class Teleport {
      *
      * @param activity The Activity object that acts as both the binding object and the Context.
      */
-    public static final void bind(@NonNull Activity activity) {
-        if (activity == null) {
-            throw new IllegalArgumentException("Activity parameter in bind method of " + Teleport.class.getSimpleName() +
-                    " class must not be null.");
-        }
+    public static void bind(@NonNull Activity activity) {
         if (activity.getIntent() != null) {
             bind(activity, activity, activity.getIntent());
         } else {
@@ -171,11 +150,7 @@ public class Teleport {
      * @param activity The Activity object that acts as both the binding object and the Context.
      * @param intent   The Intent used to store and retieve data.
      */
-    public static final void bind(@NonNull Activity activity, Intent intent) {
-        if (activity == null) {
-            throw new IllegalArgumentException("Activity parameter in bind method of " + Teleport.class.getSimpleName() +
-                    " class must not be null.");
-        }
+    public static void bind(@NonNull Activity activity, Intent intent) {
         if (intent != null) {
             bind(activity, activity, intent);
         } else {
@@ -191,11 +166,7 @@ public class Teleport {
      * @param activity The Activity object that acts as both the binding object and the Context.
      * @param bundle   The Intent used to store and retieve data.
      */
-    public static final void bind(@NonNull Activity activity, Bundle bundle) {
-        if (activity == null) {
-            throw new IllegalArgumentException("Activity parameter in bind method of " + Teleport.class.getSimpleName() +
-                    " class must not be null.");
-        }
+    public static void bind(@NonNull Activity activity, Bundle bundle) {
         if (bundle != null) {
             bind(activity, activity, bundle);
         } else {
@@ -212,11 +183,7 @@ public class Teleport {
      *
      * @param fragment The Fragment object that acts both as the binding object and to get the Context.
      */
-    public static final void bind(@NonNull Fragment fragment) {
-        if (fragment == null) {
-            throw new IllegalArgumentException("Fragment parameter in bind method of " + Teleport.class.getSimpleName() +
-                    " class must not be null.");
-        }
+    public static void bind(@NonNull Fragment fragment) {
         if (fragment.getArguments() != null) {
             bind(fragment, fragment.getActivity(), fragment.getArguments());
         } else {
@@ -230,11 +197,7 @@ public class Teleport {
      *
      * @param context The binding object and the underlying storage object used with StorageMap.
      */
-    public static final void beam(@NonNull Context context) {
-        if (context == null) {
-            throw new IllegalArgumentException("Context parameter in beam method of " + Teleport.class.getSimpleName() +
-                    " class must not be null.");
-        }
+    public static void beam(@NonNull Context context) {
         beam(context, context);
     }
 
@@ -245,24 +208,20 @@ public class Teleport {
      * @param bindObject The binding object to check for Data annotated fields (objects to be stored).
      * @param context    The context used for the underlying storage mechanism; StorageMap.
      */
-    public static final void beam(@NonNull Object bindObject, @NonNull Context context) {
-        if (bindObject == null) {
-            throw new IllegalArgumentException("Object parameter in beam method of " + Teleport.class.getSimpleName() +
-                    " class must not be null.");
-        }
-        if (context == null) {
-            throw new IllegalArgumentException("Context parameter in beam method of " + Teleport.class.getSimpleName() +
-                    " class must not be null.");
-        }
-        StorageMap map = StorageMap.with(context);
-        for (Field f : getAnnotatedFields(bindObject)) {
+    public static void beam(@NonNull Object bindObject, @NonNull Context context) {
+        final StorageMap map = StorageMap.with(context);
+
+        for (final Field f : getAnnotatedFields(bindObject)) {
             try {
+
                 f.setAccessible(true);
-                Data d = f.getAnnotation(Data.class);
-                if (d.beam()) {
+
+                final Data d = f.getAnnotation(Data.class);
+
+                if (d != null && d.beam()) {
                     map.put(d.value(), f.get(bindObject));
                 }
-            } catch (Exception e) {
+            } catch (IllegalAccessException e) {
                 e.printStackTrace();
             }
         }
@@ -276,27 +235,24 @@ public class Teleport {
      * @param context    The context used for the underlying storage mechanism; StorageMap.
      * @param intent     The intent used with context for the underlying storage mechanism; StorageMap.
      */
-    public static final void beam(@NonNull Object bindObject, @NonNull Context context, Intent intent) {
-        if (bindObject == null) {
-            throw new IllegalArgumentException("Object parameter in beam method of " + Teleport.class.getSimpleName() +
-                    " class must not be null.");
-        }
-        if (context == null) {
-            throw new IllegalArgumentException("Context parameter in beam method of " + Teleport.class.getSimpleName() +
-                    " class must not be null.");
-        }
+    public static void beam(@NonNull Object bindObject, @NonNull Context context, Intent intent) {
         if (intent == null) {
             beam(bindObject, context);
         } else {
-            StorageMap map = StorageMap.with(context, intent);
-            for (Field f : getAnnotatedFields(bindObject)) {
+
+            final StorageMap map = StorageMap.with(context, intent);
+
+            for (final Field f : getAnnotatedFields(bindObject)) {
                 try {
+
                     f.setAccessible(true);
-                    Data d = f.getAnnotation(Data.class);
-                    if (d.beam()) {
+
+                    final Data d = f.getAnnotation(Data.class);
+
+                    if (d != null && d.beam()) {
                         map.put(d.value(), f.get(bindObject));
                     }
-                } catch (Exception e) {
+                } catch (IllegalAccessException e) {
                     e.printStackTrace();
                 }
             }
@@ -310,11 +266,7 @@ public class Teleport {
      * @param context Context acts as both the binding object and the underlying storage context.
      * @param intent  The intent used with context for the underlying storage mechanism; StorageMap.
      */
-    public static final void beam(@NonNull Context context, Intent intent) {
-        if (context == null) {
-            throw new IllegalArgumentException("Context parameter in beam method of " + Teleport.class.getSimpleName() +
-                    " class must not be null.");
-        }
+    public static void beam(@NonNull Context context, Intent intent) {
         if (intent == null) {
             beam(context, context);
         } else {
@@ -330,27 +282,24 @@ public class Teleport {
      * @param context    The context used for the underlying storage mechanism; StorageMap.
      * @param bundle     The bundle used with context for the underlying storage mechanism; StorageMap.
      */
-    public static final void beam(@NonNull Object bindObject, @NonNull Context context, Bundle bundle) {
-        if (bindObject == null) {
-            throw new IllegalArgumentException("Object parameter in beam method of " + Teleport.class.getSimpleName() +
-                    " class must not be null.");
-        }
-        if (context == null) {
-            throw new IllegalArgumentException("Context parameter in beam method of " + Teleport.class.getSimpleName() +
-                    " class must not be null.");
-        }
+    public static void beam(@NonNull Object bindObject, @NonNull Context context, Bundle bundle) {
         if (bundle == null) {
             beam(bindObject, context);
         } else {
-            StorageMap map = StorageMap.with(context, bundle);
-            for (Field f : getAnnotatedFields(bindObject)) {
+
+            final StorageMap map = StorageMap.with(context, bundle);
+
+            for (final Field f : getAnnotatedFields(bindObject)) {
                 try {
+
                     f.setAccessible(true);
-                    Data d = f.getAnnotation(Data.class);
-                    if (d.beam()) {
+
+                    final Data d = f.getAnnotation(Data.class);
+
+                    if (d != null && d.beam()) {
                         map.put(d.value(), f.get(bindObject));
                     }
-                } catch (Exception e) {
+                } catch (IllegalAccessException e) {
                     e.printStackTrace();
                 }
             }
@@ -364,11 +313,7 @@ public class Teleport {
      * @param context Context acts as both the binding object and the underlying storage context.
      * @param bundle  The bundle used with context for the underlying storage mechanism; StorageMap.
      */
-    public static final void beam(@NonNull Context context, Bundle bundle) {
-        if (context == null) {
-            throw new IllegalArgumentException("Context parameter in beam method of " + Teleport.class.getSimpleName() +
-                    " class must not be null.");
-        }
+    public static void beam(@NonNull Context context, Bundle bundle) {
         if (bundle == null) {
             beam(context, context);
         } else {
@@ -382,10 +327,13 @@ public class Teleport {
      * @param bindingObject The object to search for Data annotated Fields.
      * @return List<Field> The list of annotated Fields; returns an empty list if there are no Fields.
      */
-    private static final List<Field> getAnnotatedFields(Object bindingObject) {
-        List<Field> fields = new ArrayList<>();
-        for (Field f : bindingObject.getClass().getDeclaredFields()) {
+    private static List<Field> getAnnotatedFields(Object bindingObject) {
+        final List<Field> fields = new ArrayList<>();
+
+        for (final Field f : bindingObject.getClass().getDeclaredFields()) {
+
             if (f.isAnnotationPresent(Data.class)) {
+
                 f.setAccessible(true);
                 fields.add(f);
             }
