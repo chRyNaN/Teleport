@@ -22,11 +22,13 @@ import java.lang.annotation.Target;
  */
 
 /**
- * Created by chRyNaN on 4/20/2016. An annotation to be used on fields that need to be persisted between components.
+ * Created by chRyNaN on 4/20/2016.
+ * An annotation to be used on fields that need to be persisted between components.
  */
 @Target(ElementType.FIELD)
 @Retention(RetentionPolicy.RUNTIME)
 public @interface Data {
+
     /**
      * The String key used to locate the object in storage. Defaults to an empty String resulting in the
      * object returned to be null.
