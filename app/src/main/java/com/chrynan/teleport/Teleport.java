@@ -272,6 +272,27 @@ public class Teleport {
     private static List<Field> getAnnotatedFields(Object bindingObject) {
         final List<Field> fields = new ArrayList<>();
 
+        // First get the fields that are specified in the DataField annotation on this class if it exists.
+        if (bindingObject.getClass().isAnnotationPresent(DataFields.class)) {
+
+            final DataFields dataFields = bindingObject.getClass().getAnnotation(DataFields.class);
+
+            final String[] dataFieldNames = dataFields.value();
+
+            for (final Field f : bindingObject.getClass().getDeclaredFields()) {
+
+                for (final String fieldName : dataFieldNames) {
+
+                    if (f.getName().equals(fieldName)) {
+
+                        f.setAccessible(true);
+
+                        fields.add(f);
+                    }
+                }
+            }
+        }
+
         for (final Field f : bindingObject.getClass().getDeclaredFields()) {
 
             if (f.isAnnotationPresent(Data.class)) {
@@ -281,6 +302,7 @@ public class Teleport {
                 fields.add(f);
             }
         }
+
         return fields;
     }
 
