@@ -11,6 +11,7 @@ import java.util.Collection;
  * This class implements the PersistableMap interface and allows classes to extend it without
  * having to provide an implementation for each method. Subclasses could override the methods they are interested in implementing.
  */
+@SuppressWarnings("unused")
 public class AbstractPersistableMap implements PersistableMap {
 
     @Override

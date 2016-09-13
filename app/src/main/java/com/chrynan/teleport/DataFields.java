@@ -28,6 +28,7 @@ import java.lang.annotation.Target;
  * The Strings specified must be the exact name of the fields of the Objects that need to be stored or
  * retrieved otherwise they will be ignored.
  */
+@SuppressWarnings("unused")
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
 public @interface DataFields {
