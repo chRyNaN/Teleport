@@ -28,6 +28,7 @@ import java.lang.annotation.Target;
  * to its index in the Collection or Array field. If there are more or less keys than indexes in the Collection or
  * Array field then only the keys that have a direct correspondence are mapped.
  */
+@SuppressWarnings("unused")
 @Target(ElementType.FIELD)
 @Retention(RetentionPolicy.RUNTIME)
 public @interface DataList {

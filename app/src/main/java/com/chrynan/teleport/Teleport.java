@@ -31,6 +31,7 @@ import java.util.List;
  * Created by chRyNaN on 4/20/2016.
  * This class handles binding retrieved data to appropriate fields of a specified binding object.
  */
+@SuppressWarnings("unused")
 public class Teleport {
 
     /**
@@ -69,25 +70,21 @@ public class Teleport {
      *                   null, then it is used as the default storage mechanism (SharedPreferences created by Context).
      * @param intent     The Intent used to store and retrieve data.
      */
-    public static void bind(@NonNull Object bindObject, @NonNull Context context, Intent intent) {
-        if (intent == null) {
-            bind(bindObject, context);
-        } else {
-            final StorageMap map = StorageMap.with(context, intent);
+    public static void bind(@NonNull Object bindObject, @NonNull Context context, @NonNull Intent intent) {
+        final StorageMap map = StorageMap.with(context, intent);
 
-            for (final Field f : getAnnotatedFields(bindObject)) {
-                try {
+        for (final Field f : getAnnotatedFields(bindObject)) {
+            try {
 
-                    f.setAccessible(true);
+                f.setAccessible(true);
 
-                    final Data d = f.getAnnotation(Data.class);
+                final Data d = f.getAnnotation(Data.class);
 
-                    if (d != null && d.bind()) {
-                        f.set(bindObject, map.get(d.value(), f.getType()));
-                    }
-                } catch (IllegalAccessException e) {
-                    e.printStackTrace();
+                if (d != null && d.bind()) {
+                    f.set(bindObject, map.get(d.value(), f.getType()));
                 }
+            } catch (IllegalAccessException e) {
+                e.printStackTrace();
             }
         }
     }
@@ -102,75 +99,38 @@ public class Teleport {
      *                   null, then it is used as the default storage mechanism (SharedPreferences created by Context).
      * @param bundle     The Bundle used to store and retrieve data.
      */
-    public static void bind(@NonNull Object bindObject, @NonNull Context context, Bundle bundle) {
-        if (bundle == null) {
-            bind(bindObject, context);
-        } else {
+    public static void bind(@NonNull Object bindObject, @NonNull Context context, @NonNull Bundle bundle) {
+        final StorageMap map = StorageMap.with(context, bundle);
 
-            final StorageMap map = StorageMap.with(context, bundle);
+        for (final Field f : getAnnotatedFields(bindObject)) {
+            try {
 
-            for (final Field f : getAnnotatedFields(bindObject)) {
-                try {
+                f.setAccessible(true);
 
-                    f.setAccessible(true);
+                final Data d = f.getAnnotation(Data.class);
 
-                    final Data d = f.getAnnotation(Data.class);
-
-                    if (d != null && d.bind()) {
-                        f.set(bindObject, map.get(d.value(), f.getType()));
-                    }
-                } catch (IllegalAccessException e) {
-                    e.printStackTrace();
+                if (d != null && d.bind()) {
+                    f.set(bindObject, map.get(d.value(), f.getType()));
                 }
+            } catch (IllegalAccessException e) {
+                e.printStackTrace();
             }
         }
     }
 
     /**
      * Retrieves and stores data into their corresponding fields within the specified binding object.
-     * Uses the Activity as both the binding object and the Context. First checks the Activity for
-     * an Intent (via the getIntent() method), if this Intent is not null it will attempt to use
+     * Uses the Context as both the binding object and the Context. First checks if the Context is an Activity and
+     * if it has an Intent (via the getIntent() method), if this Intent is not null it will attempt to use
      * it as the storage mechanism. Otherwise it will use the default storage mechanism using the Context.
      *
-     * @param activity The Activity object that acts as both the binding object and the Context.
+     * @param context The Context object that acts as both the binding object and the Context.
      */
-    public static void bind(@NonNull Activity activity) {
-        if (activity.getIntent() != null) {
-            bind(activity, activity, activity.getIntent());
+    public static void bind(@NonNull Context context) {
+        if (context instanceof Activity && ((Activity) context).getIntent() != null) {
+            bind(context, context, ((Activity) context).getIntent());
         } else {
-            bind(activity, activity);
-        }
-    }
-
-    /**
-     * Retrieves and stores data into their corresponding fields within the specified binding object.
-     * Uses the Activity as both the binding object and the Context. First attempts to use the provided
-     * Intent object as the storage mechanism.
-     *
-     * @param activity The Activity object that acts as both the binding object and the Context.
-     * @param intent   The Intent used to store and retieve data.
-     */
-    public static void bind(@NonNull Activity activity, Intent intent) {
-        if (intent != null) {
-            bind(activity, activity, intent);
-        } else {
-            bind(activity, activity);
-        }
-    }
-
-    /**
-     * Retrieves and stores data into their corresponding fields within the specified binding object.
-     * Uses the Activity as both the binding object and the Context. First attempts to use the provided
-     * Bundle object as the storage mechanism.
-     *
-     * @param activity The Activity object that acts as both the binding object and the Context.
-     * @param bundle   The Intent used to store and retieve data.
-     */
-    public static void bind(@NonNull Activity activity, Bundle bundle) {
-        if (bundle != null) {
-            bind(activity, activity, bundle);
-        } else {
-            bind(activity, activity);
+            bind(context, context);
         }
     }
 
@@ -189,16 +149,6 @@ public class Teleport {
         } else {
             bind(fragment, fragment.getActivity());
         }
-    }
-
-    /**
-     * Stores all fields in the binding object annotated with Data (with beam set to true) using the specified
-     * context. Context acts as both the binding object and the underlying storage context.
-     *
-     * @param context The binding object and the underlying storage object used with StorageMap.
-     */
-    public static void beam(@NonNull Context context) {
-        beam(context, context);
     }
 
     /**
@@ -235,42 +185,22 @@ public class Teleport {
      * @param context    The context used for the underlying storage mechanism; StorageMap.
      * @param intent     The intent used with context for the underlying storage mechanism; StorageMap.
      */
-    public static void beam(@NonNull Object bindObject, @NonNull Context context, Intent intent) {
-        if (intent == null) {
-            beam(bindObject, context);
-        } else {
+    public static void beam(@NonNull Object bindObject, @NonNull Context context, @NonNull Intent intent) {
+        final StorageMap map = StorageMap.with(context, intent);
 
-            final StorageMap map = StorageMap.with(context, intent);
+        for (final Field f : getAnnotatedFields(bindObject)) {
+            try {
 
-            for (final Field f : getAnnotatedFields(bindObject)) {
-                try {
+                f.setAccessible(true);
 
-                    f.setAccessible(true);
+                final Data d = f.getAnnotation(Data.class);
 
-                    final Data d = f.getAnnotation(Data.class);
-
-                    if (d != null && d.beam()) {
-                        map.put(d.value(), f.get(bindObject));
-                    }
-                } catch (IllegalAccessException e) {
-                    e.printStackTrace();
+                if (d != null && d.beam()) {
+                    map.put(d.value(), f.get(bindObject));
                 }
+            } catch (IllegalAccessException e) {
+                e.printStackTrace();
             }
-        }
-    }
-
-    /**
-     * Stores all fields in the binding object annotated with Data (with beam set to true) using the specified
-     * context. Context acts as both the binding object and the underlying storage context.
-     *
-     * @param context Context acts as both the binding object and the underlying storage context.
-     * @param intent  The intent used with context for the underlying storage mechanism; StorageMap.
-     */
-    public static void beam(@NonNull Context context, Intent intent) {
-        if (intent == null) {
-            beam(context, context);
-        } else {
-            beam(context, context, intent);
         }
     }
 
@@ -282,28 +212,44 @@ public class Teleport {
      * @param context    The context used for the underlying storage mechanism; StorageMap.
      * @param bundle     The bundle used with context for the underlying storage mechanism; StorageMap.
      */
-    public static void beam(@NonNull Object bindObject, @NonNull Context context, Bundle bundle) {
-        if (bundle == null) {
-            beam(bindObject, context);
-        } else {
+    public static void beam(@NonNull Object bindObject, @NonNull Context context, @NonNull Bundle bundle) {
+        final StorageMap map = StorageMap.with(context, bundle);
 
-            final StorageMap map = StorageMap.with(context, bundle);
+        for (final Field f : getAnnotatedFields(bindObject)) {
+            try {
 
-            for (final Field f : getAnnotatedFields(bindObject)) {
-                try {
+                f.setAccessible(true);
 
-                    f.setAccessible(true);
+                final Data d = f.getAnnotation(Data.class);
 
-                    final Data d = f.getAnnotation(Data.class);
-
-                    if (d != null && d.beam()) {
-                        map.put(d.value(), f.get(bindObject));
-                    }
-                } catch (IllegalAccessException e) {
-                    e.printStackTrace();
+                if (d != null && d.beam()) {
+                    map.put(d.value(), f.get(bindObject));
                 }
+            } catch (IllegalAccessException e) {
+                e.printStackTrace();
             }
         }
+    }
+
+    /**
+     * Stores all fields in the binding object annotated with Data (with beam set to true) using the specified
+     * context. Context acts as both the binding object and the underlying storage context.
+     *
+     * @param context The binding object and the underlying storage object used with StorageMap.
+     */
+    public static void beam(@NonNull Context context) {
+        beam(context, context);
+    }
+
+    /**
+     * Stores all fields in the binding object annotated with Data (with beam set to true) using the specified
+     * context. Context acts as both the binding object and the underlying storage context.
+     *
+     * @param context Context acts as both the binding object and the underlying storage context.
+     * @param intent  The intent used with context for the underlying storage mechanism; StorageMap.
+     */
+    public static void beam(@NonNull Context context, @NonNull Intent intent) {
+        beam(context, context, intent);
     }
 
     /**
@@ -313,12 +259,8 @@ public class Teleport {
      * @param context Context acts as both the binding object and the underlying storage context.
      * @param bundle  The bundle used with context for the underlying storage mechanism; StorageMap.
      */
-    public static void beam(@NonNull Context context, Bundle bundle) {
-        if (bundle == null) {
-            beam(context, context);
-        } else {
-            beam(context, context, bundle);
-        }
+    public static void beam(@NonNull Context context, @NonNull Bundle bundle) {
+        beam(context, context, bundle);
     }
 
     /**
@@ -335,6 +277,7 @@ public class Teleport {
             if (f.isAnnotationPresent(Data.class)) {
 
                 f.setAccessible(true);
+
                 fields.add(f);
             }
         }
