@@ -14,4 +14,5 @@ public class DefaultValues {
     public static final double DOUBLE = Double.MIN_VALUE;
     public static final boolean BOOLEAN = true;
     public static final char CHAR = Character.MIN_VALUE;
+    public static final String STRING = "string";
 }
