@@ -8,8 +8,10 @@ import android.support.annotation.NonNull;
 
 import com.chrynan.teleport.util.BitmapUtil;
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
 import java.io.Serializable;
+import java.lang.reflect.Type;
 import java.util.Collection;
 
 /**
@@ -96,12 +98,12 @@ public class SharedPreferencesPersistableMap implements PersistableMap {
 
     @Override
     public <T> void put(String key, Collection<T> value) {
-        // TODO
+        sharedPreferences.edit().putString(key, gson.toJson(value)).apply();
     }
 
     @Override
     public <T> void put(String key, T[] value) {
-        // TODO
+        sharedPreferences.edit().putString(key, gson.toJson(value)).apply();
     }
 
     @Override
@@ -297,13 +299,25 @@ public class SharedPreferencesPersistableMap implements PersistableMap {
 
     @Override
     public <T> Collection<T> getCollection(String key, Class<T> clazz) {
-        // TODO
+        try {
+            Type type = new TypeToken<Collection<T>>() {
+            }.getType();
+            return gson.fromJson(sharedPreferences.getString(key, null), type);
+        } catch (ClassCastException e) {
+            e.printStackTrace();
+        }
         return null;
     }
 
     @Override
     public <T> T[] getArray(String key, Class<T> clazz) {
-        // TODO
+        try {
+            Type type = new TypeToken<T[]>() {
+            }.getType();
+            return gson.fromJson(sharedPreferences.getString(key, null), type);
+        } catch (ClassCastException e) {
+            e.printStackTrace();
+        }
         return null;
     }
 }
