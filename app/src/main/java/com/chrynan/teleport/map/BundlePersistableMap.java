@@ -8,8 +8,10 @@ import android.support.annotation.NonNull;
 
 import com.chrynan.teleport.util.BitmapUtil;
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
 import java.io.Serializable;
+import java.lang.reflect.Type;
 import java.util.Collection;
 
 /**
@@ -94,12 +96,12 @@ public class BundlePersistableMap implements PersistableMap {
 
     @Override
     public <T> void put(String key, Collection<T> value) {
-        // TODO
+        bundle.putString(key, gson.toJson(value));
     }
 
     @Override
     public <T> void put(String key, T[] value) {
-        // TODO
+        bundle.putString(key, gson.toJson(value));
     }
 
     @Override
@@ -226,13 +228,15 @@ public class BundlePersistableMap implements PersistableMap {
 
     @Override
     public <T> Collection<T> getCollection(String key, Class<T> clazz) {
-        // TODO
-        return null;
+        Type type = new TypeToken<Collection<T>>() {
+        }.getType();
+        return gson.fromJson(bundle.getString(key), type);
     }
 
     @Override
     public <T> T[] getArray(String key, Class<T> clazz) {
-        // TODO
-        return null;
+        Type type = new TypeToken<T[]>() {
+        }.getType();
+        return gson.fromJson(bundle.getString(key), type);
     }
 }
