@@ -42,22 +42,7 @@ public class Teleport {
      * @param context    The Context used to store and retrieve data.
      */
     public static void bind(@NonNull Object bindObject, @NonNull Context context) {
-        final StorageMap map = StorageMap.with(context);
-
-        for (final Field f : getAnnotatedFields(bindObject)) {
-            try {
-
-                f.setAccessible(true);
-
-                final Data d = f.getAnnotation(Data.class);
-
-                if (d != null && d.bind()) {
-                    f.set(bindObject, map.get(d.value(), f.getType()));
-                }
-            } catch (IllegalAccessException e) {
-                e.printStackTrace();
-            }
-        }
+        bind(StorageMap.with(context), bindObject);
     }
 
     /**
@@ -71,22 +56,7 @@ public class Teleport {
      * @param intent     The Intent used to store and retrieve data.
      */
     public static void bind(@NonNull Object bindObject, @NonNull Context context, @NonNull Intent intent) {
-        final StorageMap map = StorageMap.with(context, intent);
-
-        for (final Field f : getAnnotatedFields(bindObject)) {
-            try {
-
-                f.setAccessible(true);
-
-                final Data d = f.getAnnotation(Data.class);
-
-                if (d != null && d.bind()) {
-                    f.set(bindObject, map.get(d.value(), f.getType()));
-                }
-            } catch (IllegalAccessException e) {
-                e.printStackTrace();
-            }
-        }
+        bind(StorageMap.with(context, intent), bindObject);
     }
 
     /**
@@ -100,22 +70,7 @@ public class Teleport {
      * @param bundle     The Bundle used to store and retrieve data.
      */
     public static void bind(@NonNull Object bindObject, @NonNull Context context, @NonNull Bundle bundle) {
-        final StorageMap map = StorageMap.with(context, bundle);
-
-        for (final Field f : getAnnotatedFields(bindObject)) {
-            try {
-
-                f.setAccessible(true);
-
-                final Data d = f.getAnnotation(Data.class);
-
-                if (d != null && d.bind()) {
-                    f.set(bindObject, map.get(d.value(), f.getType()));
-                }
-            } catch (IllegalAccessException e) {
-                e.printStackTrace();
-            }
-        }
+        bind(StorageMap.with(context, bundle), bindObject);
     }
 
     /**
@@ -159,22 +114,7 @@ public class Teleport {
      * @param context    The context used for the underlying storage mechanism; StorageMap.
      */
     public static void beam(@NonNull Object bindObject, @NonNull Context context) {
-        final StorageMap map = StorageMap.with(context);
-
-        for (final Field f : getAnnotatedFields(bindObject)) {
-            try {
-
-                f.setAccessible(true);
-
-                final Data d = f.getAnnotation(Data.class);
-
-                if (d != null && d.beam()) {
-                    map.put(d.value(), f.get(bindObject));
-                }
-            } catch (IllegalAccessException e) {
-                e.printStackTrace();
-            }
-        }
+        beam(StorageMap.with(context), bindObject);
     }
 
     /**
@@ -186,22 +126,7 @@ public class Teleport {
      * @param intent     The intent used with context for the underlying storage mechanism; StorageMap.
      */
     public static void beam(@NonNull Object bindObject, @NonNull Context context, @NonNull Intent intent) {
-        final StorageMap map = StorageMap.with(context, intent);
-
-        for (final Field f : getAnnotatedFields(bindObject)) {
-            try {
-
-                f.setAccessible(true);
-
-                final Data d = f.getAnnotation(Data.class);
-
-                if (d != null && d.beam()) {
-                    map.put(d.value(), f.get(bindObject));
-                }
-            } catch (IllegalAccessException e) {
-                e.printStackTrace();
-            }
-        }
+        beam(StorageMap.with(context, intent), bindObject);
     }
 
     /**
@@ -213,22 +138,7 @@ public class Teleport {
      * @param bundle     The bundle used with context for the underlying storage mechanism; StorageMap.
      */
     public static void beam(@NonNull Object bindObject, @NonNull Context context, @NonNull Bundle bundle) {
-        final StorageMap map = StorageMap.with(context, bundle);
-
-        for (final Field f : getAnnotatedFields(bindObject)) {
-            try {
-
-                f.setAccessible(true);
-
-                final Data d = f.getAnnotation(Data.class);
-
-                if (d != null && d.beam()) {
-                    map.put(d.value(), f.get(bindObject));
-                }
-            } catch (IllegalAccessException e) {
-                e.printStackTrace();
-            }
-        }
+        beam(StorageMap.with(context, bundle), bindObject);
     }
 
     /**
@@ -261,6 +171,56 @@ public class Teleport {
      */
     public static void beam(@NonNull Context context, @NonNull Bundle bundle) {
         beam(context, context, bundle);
+    }
+
+    /**
+     * Performs the binding function, as in retrieving the stored values from the provided StorageMap.
+     *
+     * @param storageMap The StorageMap used to retrieve the data.
+     * @param bindObject The Object to get data fields to place values from.
+     */
+    private static void bind(@NonNull StorageMap storageMap, @NonNull Object bindObject) {
+        for (final Field f : getAnnotatedFields(bindObject)) {
+            try {
+
+                final Data d = f.getAnnotation(Data.class);
+
+                if (d == null || d.value() == null) {
+                    // This field must have been specified in the DataFields annoation.
+                    // Use the field name as the key
+                    f.set(bindObject, storageMap.get(f.getName(), f.getType()));
+                } else if (d.bind()) {
+                    f.set(bindObject, storageMap.get(d.value(), f.getType()));
+                }
+            } catch (IllegalAccessException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    /**
+     * Performs the beaming function, as in storing all the annotated data with the provided StorageMap Object.
+     *
+     * @param storageMap The StorageMap used to store the data.
+     * @param bindObject The Object to get data fields to store from.
+     */
+    private static void beam(@NonNull StorageMap storageMap, @NonNull Object bindObject) {
+        for (final Field f : getAnnotatedFields(bindObject)) {
+            try {
+
+                final Data d = f.getAnnotation(Data.class);
+
+                if (d == null || d.value() == null) {
+                    // This field must have been specified in the DataFields annoation.
+                    // Use the field name as the key
+                    storageMap.put(f.getName(), f.get(bindObject));
+                } else if (d.beam()) {
+                    storageMap.put(d.value(), f.get(bindObject));
+                }
+            } catch (IllegalAccessException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     /**
