@@ -46,3 +46,40 @@ public class ReceiveActivity extends AppCompatActivity {
     
 }
 ```
+
+To eliminate verbosity, you can use the `@DataFields` annotation on the class containing the fields. The `@DataFields` annotation takes an array of String values which each represent both the name of the field and the key of the value.
+
+```java
+@DataFields({"field1", "field2", "field3"})
+public class MainActivity extends AppCompatActivity {
+
+    String field1;
+    Integer field2;
+    CustomObject field3;
+    
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        
+        Teleport.bind(this);
+    }
+}
+```
+
+Teleport can be used to handle storing data between lifecycle changes. 
+
+```java
+@Override
+public void onSaveInstanceState(Bundle outState) {
+    super.onSaveInstanceState(outState);
+    
+    Teleport.beam(this, outState);
+}
+
+@Override
+public void onRestoreInstanceState(Bundle inState) {
+    super.onRestoreInstanceState(inState);
+    
+    Teleport.bind(this, inState);
+}
+```
