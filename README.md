@@ -83,3 +83,11 @@ public void onRestoreInstanceState(Bundle inState) {
     Teleport.bind(this, inState);
 }
 ```
+
+## How it works
+
+Under the hood, Teleport uses Reflection to obtain fields and their keys and values. Then the values are stored using a Bundle, Intent, or SharedPreferences depending on the overloaded `bind` or `beam` method used. 
+
+Values are always stored in SharedPreferences even if a Bundle or an Intent is passed to the beam method. This is to provide redundancy for a case when the bind method is called without the Bundle or Intent used when calling the beam method. However, the proper overloaded method should always be used for accurate and expected results.
+
+Since Teleport uses Reflection, if there are a large number of values to be stored and retrieved, it should be considered to call the beam and bind methods off the main thread.
