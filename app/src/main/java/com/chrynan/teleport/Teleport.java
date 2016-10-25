@@ -180,17 +180,26 @@ public class Teleport {
      * @param bindObject The Object to get data fields to place values from.
      */
     private static void bind(@NonNull StorageMap storageMap, @NonNull Object bindObject) {
-        for (final Field f : getAnnotatedFields(bindObject)) {
+
+        for (final Field f : getFieldsSpecifiedInDataFieldsAnnotation(bindObject)) {
             try {
+                f.set(bindObject, storageMap.get(f.getName(), f.getType()));
+            } catch (IllegalAccessException e) {
+                e.printStackTrace();
+            }
+        }
 
-                final Data d = f.getAnnotation(Data.class);
+        for (final Field f : getFieldsWithDataAnnotation(bindObject)) {
 
-                if (d == null || d.value() == null) {
-                    // This field must have been specified in the DataFields annoation.
-                    // Use the field name as the key
-                    f.set(bindObject, storageMap.get(f.getName(), f.getType()));
-                } else if (d.bind()) {
-                    f.set(bindObject, storageMap.get(d.value(), f.getType()));
+            final Data d = f.getAnnotation(Data.class);
+
+            try {
+                if (d.bind()) {
+                    if (d.value().replaceAll("\\s+", "").equals("")) {
+                        f.set(bindObject, storageMap.get(f.getName(), f.getType()));
+                    } else {
+                        f.set(bindObject, storageMap.get(d.value(), f.getType()));
+                    }
                 }
             } catch (IllegalAccessException e) {
                 e.printStackTrace();
@@ -205,17 +214,26 @@ public class Teleport {
      * @param bindObject The Object to get data fields to store from.
      */
     private static void beam(@NonNull StorageMap storageMap, @NonNull Object bindObject) {
-        for (final Field f : getAnnotatedFields(bindObject)) {
+
+        for (final Field f : getFieldsSpecifiedInDataFieldsAnnotation(bindObject)) {
             try {
+                storageMap.put(f.getName(), f.get(bindObject));
+            } catch (IllegalAccessException e) {
+                e.printStackTrace();
+            }
+        }
 
-                final Data d = f.getAnnotation(Data.class);
+        for (final Field f : getFieldsWithDataAnnotation(bindObject)) {
 
-                if (d == null || d.value() == null) {
-                    // This field must have been specified in the DataFields annoation.
-                    // Use the field name as the key
-                    storageMap.put(f.getName(), f.get(bindObject));
-                } else if (d.beam()) {
-                    storageMap.put(d.value(), f.get(bindObject));
+            final Data d = f.getAnnotation(Data.class);
+
+            try {
+                if (d.bind()) {
+                    if (d.value().replaceAll("\\s+", "").equals("")) {
+                        storageMap.put(f.getName(), f.get(bindObject));
+                    } else {
+                        storageMap.put(d.value(), f.get(bindObject));
+                    }
                 }
             } catch (IllegalAccessException e) {
                 e.printStackTrace();
@@ -224,42 +242,56 @@ public class Teleport {
     }
 
     /**
-     * Retrieves all the Field objects that have a Data annotation within the binding object class.
+     * Retrieves are fields within the provided bind object class that are specified in the {@link DataFields} annotation on that class.
      *
-     * @param bindingObject The object to search for Data annotated Fields.
-     * @return List<Field> The list of annotated Fields; returns an empty list if there are no Fields.
+     * @param bindObject The class containing the fields to retrieve.
+     * @return A {@link List<Field>} containing fields that are specified in a {@link DataFields#value()} method.
      */
-    private static List<Field> getAnnotatedFields(Object bindingObject) {
+    private static List<Field> getFieldsSpecifiedInDataFieldsAnnotation(Object bindObject) {
         final List<Field> fields = new ArrayList<>();
 
-        // First get the fields that are specified in the DataField annotation on this class if it exists.
-        if (bindingObject.getClass().isAnnotationPresent(DataFields.class)) {
+        final Class<?> bindObjectClass = bindObject.getClass();
 
-            final DataFields dataFields = bindingObject.getClass().getAnnotation(DataFields.class);
+        final DataFields dataFields = bindObjectClass.getAnnotation(DataFields.class);
 
-            final String[] dataFieldNames = dataFields.value();
+        final String[] dataFieldNames = dataFields.value();
 
-            for (final Field f : bindingObject.getClass().getDeclaredFields()) {
+        if (dataFieldNames != null && dataFieldNames.length > 0) {
 
-                for (final String fieldName : dataFieldNames) {
+            // FIXME: O(n^2) is pretty slow, should fix this if possible
+            for (final Field field : bindObjectClass.getDeclaredFields()) {
 
-                    if (f.getName().equals(fieldName)) {
+                for (final String dataFieldName : dataFieldNames) {
 
-                        f.setAccessible(true);
+                    if (field.getName().equals(dataFieldName)) {
 
-                        fields.add(f);
+                        field.setAccessible(true);
+
+                        fields.add(field);
                     }
                 }
             }
         }
 
-        for (final Field f : bindingObject.getClass().getDeclaredFields()) {
+        return fields;
+    }
 
-            if (f.isAnnotationPresent(Data.class)) {
+    /**
+     * Retrieves all fields within the provided bind objects class annotated with the {@link Data} class.
+     *
+     * @param bindObject The class containing the Fields to retrieve.
+     * @return A {@link List<Field>} containing fields annotated with the {@link Data} annotation.
+     */
+    private static List<Field> getFieldsWithDataAnnotation(Object bindObject) {
+        final List<Field> fields = new ArrayList<>();
 
-                f.setAccessible(true);
+        for (final Field field : bindObject.getClass().getDeclaredFields()) {
 
-                fields.add(f);
+            if (field.isAnnotationPresent(Data.class)) {
+
+                field.setAccessible(true);
+
+                fields.add(field);
             }
         }
 
