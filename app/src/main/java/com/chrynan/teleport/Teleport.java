@@ -228,7 +228,9 @@ public class Teleport {
             final Data d = f.getAnnotation(Data.class);
 
             try {
-                if (d.bind()) {
+
+                if (d.beam()) {
+
                     if (d.value().replaceAll("\\s+", "").equals("")) {
                         storageMap.put(f.getName(), f.get(bindObject));
                     } else {
