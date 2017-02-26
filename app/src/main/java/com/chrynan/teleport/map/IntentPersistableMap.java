@@ -229,18 +229,20 @@ public class IntentPersistableMap implements PersistableMap {
         return BitmapUtil.getBitmap(context, key);
     }
 
+    @SuppressWarnings("unchecked")
     @Override
-    public Serializable getSerializable(String key) {
+    public <T extends Serializable> T getSerializable(String key) {
         final Bundle bundle = getBundle();
 
-        return bundle.getSerializable(key);
+        return (T) bundle.getSerializable(key);
     }
 
+    @SuppressWarnings("unchecked")
     @Override
-    public Parcelable getParcelable(String key) {
+    public <T extends Parcelable> T getParcelable(String key) {
         final Bundle bundle = getBundle();
 
-        return bundle.getParcelable(key);
+        return (T) bundle.getParcelable(key);
     }
 
     @Override

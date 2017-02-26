@@ -249,15 +249,16 @@ public class SharedPreferencesPersistableMap implements PersistableMap {
         return BitmapUtil.getBitmap(context, key);
     }
 
+    @SuppressWarnings("unchecked")
     @Override
-    public Serializable getSerializable(String key) {
+    public <T extends Serializable> T getSerializable(String key) {
         try {
             if (sharedPreferences.contains(key)) {
                 if (sharedPreferences.getString(key, null) == null &&
                         sharedPreferences.getString(key, DefaultValues.STRING).equals(DefaultValues.STRING)) {
                     return null;
                 }
-                return gson.fromJson(sharedPreferences.getString(key, DefaultValues.STRING), Serializable.class);
+                return (T) gson.fromJson(sharedPreferences.getString(key, DefaultValues.STRING), Serializable.class);
             }
         } catch (ClassCastException e) {
             e.printStackTrace();
@@ -265,15 +266,16 @@ public class SharedPreferencesPersistableMap implements PersistableMap {
         return null;
     }
 
+    @SuppressWarnings("unchecked")
     @Override
-    public Parcelable getParcelable(String key) {
+    public <T extends Parcelable> T getParcelable(String key) {
         try {
             if (sharedPreferences.contains(key)) {
                 if (sharedPreferences.getString(key, null) == null &&
                         sharedPreferences.getString(key, DefaultValues.STRING).equals(DefaultValues.STRING)) {
                     return null;
                 }
-                return gson.fromJson(sharedPreferences.getString(key, DefaultValues.STRING), Parcelable.class);
+                return (T) gson.fromJson(sharedPreferences.getString(key, DefaultValues.STRING), Parcelable.class);
             }
         } catch (ClassCastException e) {
             e.printStackTrace();

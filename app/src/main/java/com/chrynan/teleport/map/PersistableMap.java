@@ -249,7 +249,7 @@ public interface PersistableMap {
      * @return The Object retrieved from the underlying data structure or null if one is not found.
      */
     @Nullable
-    Serializable getSerializable(String key);
+    <T extends Serializable> T getSerializable(String key);
 
     /**
      * Retrieves a Parcelable from the underlying persistable data structure.
@@ -258,7 +258,7 @@ public interface PersistableMap {
      * @return The Object retrieved from the underlying data structure or null if one is not found.
      */
     @Nullable
-    Parcelable getParcelable(String key);
+    <T extends Parcelable> T getParcelable(String key);
 
     /**
      * Retrieves an Object from the underlying persistable data structure.

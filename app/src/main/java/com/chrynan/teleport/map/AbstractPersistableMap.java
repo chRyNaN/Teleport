@@ -140,12 +140,12 @@ public class AbstractPersistableMap implements PersistableMap {
     }
 
     @Override
-    public Serializable getSerializable(String key) {
+    public <T extends Serializable> T getSerializable(String key) {
         return null;
     }
 
     @Override
-    public Parcelable getParcelable(String key) {
+    public <T extends Parcelable> T getParcelable(String key) {
         return null;
     }
 

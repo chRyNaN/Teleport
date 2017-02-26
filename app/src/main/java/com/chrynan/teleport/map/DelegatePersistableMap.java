@@ -247,25 +247,27 @@ public class DelegatePersistableMap implements PersistableMap {
         return null;
     }
 
+    @SuppressWarnings("unchecked")
     @Override
-    public Serializable getSerializable(String key) {
+    public <T extends Serializable> T getSerializable(String key) {
         Serializable s;
         for (PersistableMap p : persistableMaps) {
             s = p.getSerializable(key);
             if (s != null) {
-                return s;
+                return (T) s;
             }
         }
         return null;
     }
 
+    @SuppressWarnings("unchecked")
     @Override
-    public Parcelable getParcelable(String key) {
+    public <T extends Parcelable> T getParcelable(String key) {
         Parcelable p;
         for (PersistableMap pm : persistableMaps) {
             p = pm.getParcelable(key);
             if (p != null) {
-                return p;
+                return (T) p;
             }
         }
         return null;

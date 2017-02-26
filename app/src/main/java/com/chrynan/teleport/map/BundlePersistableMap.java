@@ -211,14 +211,16 @@ public class BundlePersistableMap implements PersistableMap {
         return BitmapUtil.getBitmap(context, key);
     }
 
+    @SuppressWarnings("unchecked")
     @Override
-    public Serializable getSerializable(String key) {
-        return bundle.getSerializable(key);
+    public <T extends Serializable> T getSerializable(String key) {
+        return (T) bundle.getSerializable(key);
     }
 
+    @SuppressWarnings("unchecked")
     @Override
-    public Parcelable getParcelable(String key) {
-        return bundle.getParcelable(key);
+    public <T extends Parcelable> T getParcelable(String key) {
+        return (T) bundle.getParcelable(key);
     }
 
     @Override
