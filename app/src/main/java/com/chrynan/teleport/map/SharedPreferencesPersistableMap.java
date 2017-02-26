@@ -5,6 +5,7 @@ import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.os.Parcelable;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 
 import com.chrynan.teleport.util.BitmapUtil;
 import com.google.gson.Gson;
@@ -25,10 +26,10 @@ public class SharedPreferencesPersistableMap implements PersistableMap {
     private final SharedPreferences sharedPreferences;
     private final Gson gson;
 
-    public SharedPreferencesPersistableMap(@NonNull Context context) {
+    public SharedPreferencesPersistableMap(@NonNull Context context, @Nullable Gson gson) {
         this.context = context;
         this.sharedPreferences = context.getSharedPreferences(FILE_NAME, Context.MODE_PRIVATE);
-        this.gson = new Gson();
+        this.gson = gson == null ? new Gson() : gson;
     }
 
     @Override

@@ -5,6 +5,7 @@ import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 
 import com.chrynan.teleport.util.BitmapUtil;
 import com.google.gson.Gson;
@@ -23,10 +24,10 @@ public class BundlePersistableMap implements PersistableMap {
     private final Bundle bundle;
     private final Gson gson;
 
-    public BundlePersistableMap(@NonNull Context context, @NonNull Bundle bundle) {
+    public BundlePersistableMap(@NonNull Context context, @NonNull Bundle bundle, @Nullable Gson gson) {
         this.context = context;
         this.bundle = bundle;
-        this.gson = new Gson();
+        this.gson = gson == null ? new Gson() : gson;
     }
 
     @Override

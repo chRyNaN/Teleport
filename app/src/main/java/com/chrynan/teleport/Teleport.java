@@ -5,7 +5,10 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+
+import com.google.gson.Gson;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
@@ -34,6 +37,17 @@ import java.util.List;
 @SuppressWarnings("unused")
 public class Teleport {
 
+    private static Gson gsonObject;
+
+    /**
+     * Sets the {@link Gson} object to be used for custom object serialization and deserialization.
+     *
+     * @param gson The {@link Gson} object.
+     */
+    public static void withGson(@Nullable Gson gson) {
+        gsonObject = gson;
+    }
+
     /**
      * Retrieves and stores data into their corresponding fields within the specified binding object.
      *
@@ -42,7 +56,7 @@ public class Teleport {
      * @param context    The Context used to store and retrieve data.
      */
     public static void bind(@NonNull Object bindObject, @NonNull Context context) {
-        bind(StorageMap.with(context), bindObject);
+        bind(StorageMap.with(context, gsonObject), bindObject);
     }
 
     /**
@@ -56,7 +70,7 @@ public class Teleport {
      * @param intent     The Intent used to store and retrieve data.
      */
     public static void bind(@NonNull Object bindObject, @NonNull Context context, @NonNull Intent intent) {
-        bind(StorageMap.with(context, intent), bindObject);
+        bind(StorageMap.with(context, intent, gsonObject), bindObject);
     }
 
     /**
@@ -70,7 +84,7 @@ public class Teleport {
      * @param bundle     The Bundle used to store and retrieve data.
      */
     public static void bind(@NonNull Object bindObject, @NonNull Context context, @NonNull Bundle bundle) {
-        bind(StorageMap.with(context, bundle), bindObject);
+        bind(StorageMap.with(context, bundle, gsonObject), bindObject);
     }
 
     /**
@@ -114,7 +128,7 @@ public class Teleport {
      * @param context    The context used for the underlying storage mechanism; StorageMap.
      */
     public static void beam(@NonNull Object bindObject, @NonNull Context context) {
-        beam(StorageMap.with(context), bindObject);
+        beam(StorageMap.with(context, gsonObject), bindObject);
     }
 
     /**
@@ -126,7 +140,7 @@ public class Teleport {
      * @param intent     The intent used with context for the underlying storage mechanism; StorageMap.
      */
     public static void beam(@NonNull Object bindObject, @NonNull Context context, @NonNull Intent intent) {
-        beam(StorageMap.with(context, intent), bindObject);
+        beam(StorageMap.with(context, intent, gsonObject), bindObject);
     }
 
     /**
@@ -138,7 +152,7 @@ public class Teleport {
      * @param bundle     The bundle used with context for the underlying storage mechanism; StorageMap.
      */
     public static void beam(@NonNull Object bindObject, @NonNull Context context, @NonNull Bundle bundle) {
-        beam(StorageMap.with(context, bundle), bindObject);
+        beam(StorageMap.with(context, bundle, gsonObject), bindObject);
     }
 
     /**

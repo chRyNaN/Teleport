@@ -6,12 +6,14 @@ import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 
 import com.chrynan.teleport.map.BundlePersistableMap;
 import com.chrynan.teleport.map.DelegatePersistableMap;
 import com.chrynan.teleport.map.IntentPersistableMap;
 import com.chrynan.teleport.map.PersistableMap;
 import com.chrynan.teleport.map.SharedPreferencesPersistableMap;
+import com.google.gson.Gson;
 
 import java.io.Serializable;
 import java.util.Collection;
@@ -52,11 +54,12 @@ public class StorageMap {
      * Creates an instance of this class using the specified Context.
      *
      * @param context The Context used to store and retrieve data.
+     * @param gson    The {@link Gson} object for serialization and deserialization.
      * @return StorageMap A new instance of this class.
      */
-    public static StorageMap with(@NonNull Context context) {
+    public static StorageMap with(@NonNull Context context, @Nullable Gson gson) {
 
-        return new StorageMap(new SharedPreferencesPersistableMap(context));
+        return new StorageMap(new SharedPreferencesPersistableMap(context, gson));
     }
 
     /**
@@ -64,11 +67,12 @@ public class StorageMap {
      *
      * @param context The Context from within this object is created.
      * @param intent  The Intent used to store and retrieve data.
+     * @param gson    The {@link Gson} object for serialization and deserialization.
      * @return StorageMap A new instance of this class.
      */
-    public static StorageMap with(@NonNull Context context, @NonNull Intent intent) {
+    public static StorageMap with(@NonNull Context context, @NonNull Intent intent, @Nullable Gson gson) {
 
-        return new StorageMap(new DelegatePersistableMap(new IntentPersistableMap(context, intent), new SharedPreferencesPersistableMap(context)));
+        return new StorageMap(new DelegatePersistableMap(new IntentPersistableMap(context, intent, gson), new SharedPreferencesPersistableMap(context, gson)));
     }
 
     /**
@@ -78,9 +82,9 @@ public class StorageMap {
      * @param bundle  The Bundle used to store and retrieve data.
      * @return StorageMap A new instance of this class.
      */
-    public static StorageMap with(@NonNull Context context, @NonNull Bundle bundle) {
+    public static StorageMap with(@NonNull Context context, @NonNull Bundle bundle, @Nullable Gson gson) {
 
-        return new StorageMap(new DelegatePersistableMap(new BundlePersistableMap(context, bundle), new SharedPreferencesPersistableMap(context)));
+        return new StorageMap(new DelegatePersistableMap(new BundlePersistableMap(context, bundle, gson), new SharedPreferencesPersistableMap(context, gson)));
     }
 
     /**
@@ -138,5 +142,4 @@ public class StorageMap {
         persistableMap.put(key, object);
         return this;
     }
-
 }
