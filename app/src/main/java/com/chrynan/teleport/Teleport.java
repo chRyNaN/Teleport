@@ -194,15 +194,6 @@ public class Teleport {
      * @param bindObject The Object to get data fields to place values from.
      */
     private static void bind(@NonNull StorageMap storageMap, @NonNull Object bindObject) {
-
-        for (final Field f : getFieldsSpecifiedInDataFieldsAnnotation(bindObject)) {
-            try {
-                f.set(bindObject, storageMap.get(f.getName(), f.getType()));
-            } catch (IllegalAccessException e) {
-                e.printStackTrace();
-            }
-        }
-
         for (final Field f : getFieldsWithDataAnnotation(bindObject)) {
 
             final Data d = f.getAnnotation(Data.class);
@@ -228,15 +219,6 @@ public class Teleport {
      * @param bindObject The Object to get data fields to store from.
      */
     private static void beam(@NonNull StorageMap storageMap, @NonNull Object bindObject) {
-
-        for (final Field f : getFieldsSpecifiedInDataFieldsAnnotation(bindObject)) {
-            try {
-                storageMap.put(f.getName(), f.get(bindObject));
-            } catch (IllegalAccessException e) {
-                e.printStackTrace();
-            }
-        }
-
         for (final Field f : getFieldsWithDataAnnotation(bindObject)) {
 
             final Data d = f.getAnnotation(Data.class);
@@ -255,41 +237,6 @@ public class Teleport {
                 e.printStackTrace();
             }
         }
-    }
-
-    /**
-     * Retrieves are fields within the provided bind object class that are specified in the {@link DataFields} annotation on that class.
-     *
-     * @param bindObject The class containing the fields to retrieve.
-     * @return A {@link List<Field>} containing fields that are specified in a {@link DataFields#value()} method.
-     */
-    private static List<Field> getFieldsSpecifiedInDataFieldsAnnotation(Object bindObject) {
-        final List<Field> fields = new ArrayList<>();
-
-        final Class<?> bindObjectClass = bindObject.getClass();
-
-        final DataFields dataFields = bindObjectClass.getAnnotation(DataFields.class);
-
-        final String[] dataFieldNames = dataFields.value();
-
-        if (dataFieldNames != null && dataFieldNames.length > 0) {
-
-            // FIXME: O(n^2) is pretty slow, should fix this if possible
-            for (final Field field : bindObjectClass.getDeclaredFields()) {
-
-                for (final String dataFieldName : dataFieldNames) {
-
-                    if (field.getName().equals(dataFieldName)) {
-
-                        field.setAccessible(true);
-
-                        fields.add(field);
-                    }
-                }
-            }
-        }
-
-        return fields;
     }
 
     /**
