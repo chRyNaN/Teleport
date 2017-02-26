@@ -2,13 +2,11 @@ package com.chrynan.teleport.map;
 
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
-import com.chrynan.teleport.util.BitmapUtil;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
@@ -73,11 +71,6 @@ public class IntentPersistableMap implements PersistableMap {
     @Override
     public void put(String key, String value) {
         intent.putExtra(key, value);
-    }
-
-    @Override
-    public void put(String key, Bitmap bitmap) {
-        BitmapUtil.saveBitmap(context, key, bitmap);
     }
 
     @Override
@@ -223,11 +216,6 @@ public class IntentPersistableMap implements PersistableMap {
         final Bundle bundle = getBundle();
 
         return bundle.getString(key);
-    }
-
-    @Override
-    public Bitmap getBitmap(String key) {
-        return BitmapUtil.getBitmap(context, key);
     }
 
     @SuppressWarnings("unchecked")

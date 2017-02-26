@@ -2,7 +2,6 @@ package com.chrynan.teleport;
 
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.support.annotation.NonNull;
@@ -115,8 +114,6 @@ public class StorageMap {
             return (T) persistableMap.getString(key);
         } else if (Character.class.isAssignableFrom(clazz)) {
             return (T) persistableMap.getCharacter(key);
-        } else if (Bitmap.class.isAssignableFrom(clazz)) {
-            return (T) persistableMap.getBitmap(key);
         } else if (Serializable.class.isAssignableFrom(clazz)) {
             return (T) persistableMap.getSerializable(key);
         } else if (Parcelable.class.isAssignableFrom(clazz)) {

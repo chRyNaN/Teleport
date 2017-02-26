@@ -2,12 +2,10 @@ package com.chrynan.teleport.map;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.graphics.Bitmap;
 import android.os.Parcelable;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
-import com.chrynan.teleport.util.BitmapUtil;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
@@ -75,11 +73,6 @@ public class SharedPreferencesPersistableMap implements PersistableMap {
     @Override
     public void put(String key, String value) {
         sharedPreferences.edit().putString(key, value).apply();
-    }
-
-    @Override
-    public void put(String key, Bitmap bitmap) {
-        BitmapUtil.saveBitmap(context, key, bitmap);
     }
 
     @Override
@@ -243,11 +236,6 @@ public class SharedPreferencesPersistableMap implements PersistableMap {
             e.printStackTrace();
         }
         return null;
-    }
-
-    @Override
-    public Bitmap getBitmap(String key) {
-        return BitmapUtil.getBitmap(context, key);
     }
 
     @SuppressWarnings("unchecked")

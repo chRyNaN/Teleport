@@ -1,6 +1,5 @@
 package com.chrynan.teleport.map;
 
-import android.graphics.Bitmap;
 import android.os.Parcelable;
 import android.support.annotation.Nullable;
 
@@ -100,14 +99,6 @@ public interface PersistableMap {
      * @param value The value to store.
      */
     void put(String key, String value);
-
-    /**
-     * Puts a Bitmap into the underlying persistable data structure or into its own file.
-     *
-     * @param key    The key used to reference the data.
-     * @param bitmap The value to store.
-     */
-    void put(String key, Bitmap bitmap);
 
     /**
      * Puts a Serializable into the underlying persistable data structure.
@@ -232,15 +223,6 @@ public interface PersistableMap {
      */
     @Nullable
     String getString(String key);
-
-    /**
-     * Retrieves a Bitmap from the underlying persistable data structure or from its own file.
-     *
-     * @param key The key used to reference the data.
-     * @return The Object retrieved from the underlying data structure or null if one is not found.
-     */
-    @Nullable
-    Bitmap getBitmap(String key);
 
     /**
      * Retrieves a Serializable from the underlying persistable data structure.
