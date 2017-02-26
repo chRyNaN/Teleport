@@ -8,11 +8,12 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 
+import com.chrynan.teleport.map.PersistableMap;
 import com.google.gson.Gson;
 
-import java.lang.reflect.Field;
-import java.util.ArrayList;
-import java.util.List;
+import java.lang.reflect.InvocationTargetException;
+import java.util.HashMap;
+import java.util.Map;
 
 /*
  * Copyright 2016 chRyNaN
@@ -36,6 +37,9 @@ import java.util.List;
  */
 @SuppressWarnings("unused")
 public class Teleport {
+
+    private static final String BIND_CLASS_SUFFIX = "_TeleportationMachine";
+    private static final Map<Class<?>, Teleporter> teleporters = new HashMap<>();
 
     private static Gson gsonObject;
 
@@ -194,22 +198,9 @@ public class Teleport {
      * @param bindObject The Object to get data fields to place values from.
      */
     private static void bind(@NonNull StorageMap storageMap, @NonNull Object bindObject) {
-        for (final Field f : getFieldsWithDataAnnotation(bindObject)) {
+        Teleporter teleporter = getTeleportationMachine(storageMap, bindObject);
 
-            final Data d = f.getAnnotation(Data.class);
-
-            try {
-                if (d.bind()) {
-                    if (d.value().replaceAll("\\s+", "").equals("")) {
-                        f.set(bindObject, storageMap.get(f.getName(), f.getType()));
-                    } else {
-                        f.set(bindObject, storageMap.get(d.value(), f.getType()));
-                    }
-                }
-            } catch (IllegalAccessException e) {
-                e.printStackTrace();
-            }
-        }
+        teleporter.bind();
     }
 
     /**
@@ -219,46 +210,37 @@ public class Teleport {
      * @param bindObject The Object to get data fields to store from.
      */
     private static void beam(@NonNull StorageMap storageMap, @NonNull Object bindObject) {
-        for (final Field f : getFieldsWithDataAnnotation(bindObject)) {
+        Teleporter teleporter = getTeleportationMachine(storageMap, bindObject);
 
-            final Data d = f.getAnnotation(Data.class);
+        teleporter.beam();
+    }
 
+    @SuppressWarnings("unchecked")
+    private static Teleporter getTeleportationMachine(@NonNull StorageMap storageMap, @NonNull Object bindObject) {
+        Teleporter teleportationMachine = teleporters.get(bindObject.getClass());
+
+        if (teleportationMachine == null) {
             try {
+                String className = bindObject.getClass().getCanonicalName();
+                className = className == null ? bindObject.getClass().getName() : className;
+                Class<? extends Teleporter> clazz = (Class<? extends Teleporter>) Class.forName(className + BIND_CLASS_SUFFIX);
 
-                if (d.beam()) {
+                teleportationMachine = clazz.getConstructor(bindObject.getClass(), PersistableMap.class).newInstance(bindObject, storageMap.getPersistableMap());
 
-                    if (d.value().replaceAll("\\s+", "").equals("")) {
-                        storageMap.put(f.getName(), f.get(bindObject));
-                    } else {
-                        storageMap.put(d.value(), f.get(bindObject));
-                    }
-                }
+                teleporters.put(bindObject.getClass(), teleportationMachine);
+            } catch (ClassNotFoundException e) {
+                e.printStackTrace(); // TODO
+            } catch (NoSuchMethodException e) {
+                e.printStackTrace(); // TODO
             } catch (IllegalAccessException e) {
-                e.printStackTrace();
-            }
-        }
-    }
-
-    /**
-     * Retrieves all fields within the provided bind objects class annotated with the {@link Data} class.
-     *
-     * @param bindObject The class containing the Fields to retrieve.
-     * @return A {@link List<Field>} containing fields annotated with the {@link Data} annotation.
-     */
-    private static List<Field> getFieldsWithDataAnnotation(Object bindObject) {
-        final List<Field> fields = new ArrayList<>();
-
-        for (final Field field : bindObject.getClass().getDeclaredFields()) {
-
-            if (field.isAnnotationPresent(Data.class)) {
-
-                field.setAccessible(true);
-
-                fields.add(field);
+                e.printStackTrace(); // TODO
+            } catch (InstantiationException e) {
+                e.printStackTrace(); // TODO
+            } catch (InvocationTargetException e) {
+                e.printStackTrace(); // TODO
             }
         }
 
-        return fields;
+        return teleportationMachine;
     }
-
 }
